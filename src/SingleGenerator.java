@@ -12,7 +12,6 @@ public class SingleGenerator extends Generator{
 	}
 
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
-
 		if (teams.size() > 1) {
 			// split
 			ArrayList<Team> teams1 = new ArrayList<Team>();
