@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class SingleGenerator extends Generator{
 
 	SingleBracket sb;
+	
 	SingleGenerator(ArrayList<Team> teams, boolean seed){
 		if (seed) {
 			teams = organizeSeeds(teams);

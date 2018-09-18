@@ -4,6 +4,7 @@ public class SingleBracket extends Bracket{
 	private class Slot {
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot;
+		int round, matchNumber;
 
 		Slot(ArrayList<Team> team1, ArrayList<Team> team2) {
 			this.teams1 = team1;
@@ -45,5 +46,29 @@ public class SingleBracket extends Bracket{
 		}
 
 		return newList;
+	}
+
+	@Override
+	int getNumberOfTeams() {
+		return 0;
+	}
+
+	@Override
+	int getNumberOfRounds() {
+		return 0;
+	}
+
+	@Override
+	int getNumberOfMatchesInRounds() {
+		return 0;
+	}
+
+	@Override
+	String[][] getTeamsInMatch(int round, int matchNumber) {
+		return null;
+	}
+
+	@Override
+	void setMatchWinner() {
 	}
 }
