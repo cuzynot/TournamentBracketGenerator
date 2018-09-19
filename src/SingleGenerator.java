@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SingleGenerator extends Generator{
 
@@ -14,18 +15,23 @@ public class SingleGenerator extends Generator{
 
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
 		if (teams.size() > 1) {
+			// sort
+			Collections.sort(teams);
+			
 			// split
 			ArrayList<Team> teams1 = new ArrayList<Team>();
 			ArrayList<Team> teams2 = new ArrayList<Team>();
 			
 			teams1.add(teams.remove(0));
 
-			for (int i = 0; i < teams.size(); i++) {
-				if ((i / 2) % 2 == 0) {
-					teams2.add(teams.remove(i + 1));
+			int count = 0;
+			while (!teams.isEmpty()) {
+				if ((count / 2) % 2 == 0) {
+					teams2.add(teams.remove(0));
 				} else {
-					teams1.add(teams.remove(i + 1));
+					teams1.add(teams.remove(0));
 				}
+				count++;
 			}
 
 			// merge

@@ -22,7 +22,7 @@ public class SingleBracket extends Bracket{
 		}
 	}
 
-	Slot lastSlot;
+	private Slot lastSlot;
 
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size();
