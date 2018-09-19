@@ -1,5 +1,13 @@
 
 public class Team {
-	int seed;
-	String name;
+	private int seed;
+	private String name;
+	
+	String getName() {
+		return name;
+	}
+	
+	int getSeed() {
+		return seed;
+	}
 }

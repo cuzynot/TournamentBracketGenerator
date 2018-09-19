@@ -7,7 +7,7 @@ public class SingleBracket extends Bracket{
 	int numRounds;
 	int numTeams;
 	HashMap<Integer, Integer> numMatchesInRound;
-	
+
 	private class Slot {
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot;
@@ -27,47 +27,44 @@ public class SingleBracket extends Bracket{
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size();
 		numMatchesInRound = new HashMap<Integer, Integer>();
-		
+
 		// recursive call to construct the binary tree
 		lastSlot = constructSlots(teams, 1, 1);
-		
+
 		// breadth first search to get 1. number of rounds and 2. number of matches in each round
 		bfs();
 	}
-	
+
 	private void bfs() {
 		LinkedList<Slot> slots = new LinkedList<Slot>();
 		slots.add(lastSlot);
-		
+
 		numRounds = 0;
 		Stack<Integer> matchesInRound = new Stack<Integer>();
-		
+
 		while (!slots.isEmpty()) {
 			int size = slots.size();
-			int rounds = 0;
-			
+
 			for (int i = 0; i < size; i++) {
 				Slot s = slots.pop();
-				
+
 				if (s.leftSlot != null) {
 					slots.add(s.leftSlot);
 				}
 				if (s.rightSlot != null) {
 					slots.add(s.rightSlot);
 				}
-				
-				rounds++;
 			}
-			
+
 			numRounds++;
-			matchesInRound.push(rounds);
+			matchesInRound.push(size);
 		}
-		
+
 		int roundCounter = 1;
 		while (!matchesInRound.isEmpty()) {
 			int m = matchesInRound.pop();
 			numMatchesInRound.put(roundCounter, m);
-			
+
 			roundCounter++;
 		}
 	}
@@ -88,7 +85,7 @@ public class SingleBracket extends Bracket{
 		if (teams2.size() > 1) {
 			s.rightSlot = constructSlots(teams2, round + 1, matchNumber * 2);
 		}
-		
+
 		return s;
 	}
 
@@ -101,7 +98,7 @@ public class SingleBracket extends Bracket{
 
 		return newList;
 	}
-	
+
 	// check exception
 
 	@Override
@@ -124,11 +121,116 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	String[][] getTeamsInMatch(int round, int matchNumber) {
-		return null;
+
+		Slot s = getSlot(round, matchNumber);
+
+		// fill 2d array
+		String[][] teamNames = new String[2][];
+
+		teamNames[0] = new String[s.teams1.size()];
+		teamNames[1] = new String[s.teams2.size()];
+
+		for (int i = 0; i < s.teams1.size(); i++) {
+			teamNames[0][i] = s.teams1.get(i).getName();
+		}
+		for (int i = 0; i < s.teams2.size(); i++) {
+			teamNames[1][i] = s.teams2.get(i).getName();
+		}
+
+		return teamNames;
 	}
 
 	@Override
 	void setMatchWinner(String teamName, int round, int matchNumber) {
-		
+
+		ArrayList<Boolean> path = new ArrayList<Boolean>();
+		for (int i = round; i < numRounds; i++) {
+			if (matchNumber % 2 == 0) {
+				matchNumber /= 2;
+				path.add(true);
+			} else {
+				matchNumber = (matchNumber + 1) / 2;
+				path.add(false);
+			}
+		}
+
+		// go backwards from last slot to find the specified slot
+		Slot s = lastSlot;
+
+		for (int i = path.size() - 1; i >= 0; i--) {
+			if (path.get(i)) {
+				s = s.rightSlot;
+			} else {
+				s = s.leftSlot;
+			}
+		}
+
+		ArrayList<Team> teamsRemove = new ArrayList<Team>();
+
+		for (int i = 0; i < s.teams1.size(); i++) {
+			if (!(s.teams1.get(i).getName().equals(teamName))) {
+				teamsRemove.add(s.teams1.remove(i));
+				i--;
+			}
+		}
+
+		for (int i = 0; i < s.teams2.size(); i++) {
+			if (!(s.teams2.get(i).getName().equals(teamName))) {
+				teamsRemove.add(s.teams2.remove(i));
+				i--;
+			}
+		}
+
+		if (s.teams1.size() == 1) {
+			s.winner = s.teams1.get(0);
+		} else {
+			s.winner = s.teams2.get(0);
+		}
+
+		s = lastSlot;
+
+		for (int i = path.size() - 1; i > 0; i--) {
+			for (int j = 0; j < teamsRemove.size(); j++) {
+				s.teams1.remove(teamsRemove.get(i));
+			}
+			for (int j = 0; j < teamsRemove.size(); j++) {
+				s.teams2.remove(teamsRemove.get(i));
+			}
+			if (path.get(i)) {
+				s = s.rightSlot;
+			} else {
+				s = s.leftSlot;
+			}
+		}
 	}
+
+	private Slot getSlot(int round, int matchNumber) {
+		Stack<Boolean> stack = new Stack<Boolean>();
+		for (int i = round; i < numRounds; i++) {
+			if (matchNumber % 2 == 0) {
+				matchNumber /= 2;
+				stack.add(true);
+			} else {
+				matchNumber = (matchNumber + 1) / 2;
+				stack.add(false);
+			}
+		}
+
+		// go backwards from last slot to find the specified slot
+		Slot s = lastSlot;
+
+		while (!stack.isEmpty()) {
+			if (stack.pop()) {
+				s = s.rightSlot;
+			} else {
+				s = s.leftSlot;
+			}
+		}
+
+		return s;
+	}
+
+	// int getMatchNumber(Team team)
+	// int getRoundNumber(Team team)
+
 }
