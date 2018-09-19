@@ -1,10 +1,18 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class SingleBracket extends Bracket{
+	int numRounds;
+	int numTeams;
+	HashMap<Integer, Integer> numMatchesInRound;
+	
 	private class Slot {
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot;
 		int round, matchNumber;
+		Team winner;
 
 		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
 			this.teams1 = team1;
@@ -17,14 +25,58 @@ public class SingleBracket extends Bracket{
 	Slot lastSlot;
 
 	SingleBracket(ArrayList<Team> teams) {
+		numTeams = teams.size();
+		numMatchesInRound = new HashMap<Integer, Integer>();
+		
+		// recursive call to construct the binary tree
 		lastSlot = constructSlots(teams, 1, 1);
+		
+		// breadth first search to get 1. number of rounds and 2. number of matches in each round
+		bfs();
+	}
+	
+	private void bfs() {
+		LinkedList<Slot> slots = new LinkedList<Slot>();
+		slots.add(lastSlot);
+		
+		numRounds = 0;
+		Stack<Integer> matchesInRound = new Stack<Integer>();
+		
+		while (!slots.isEmpty()) {
+			int size = slots.size();
+			int rounds = 0;
+			
+			for (int i = 0; i < size; i++) {
+				Slot s = slots.pop();
+				
+				if (s.leftSlot != null) {
+					slots.add(s.leftSlot);
+				}
+				if (s.rightSlot != null) {
+					slots.add(s.rightSlot);
+				}
+				
+				rounds++;
+			}
+			
+			numRounds++;
+			matchesInRound.push(rounds);
+		}
+		
+		int roundCounter = 1;
+		while (!matchesInRound.isEmpty()) {
+			int m = matchesInRound.pop();
+			numMatchesInRound.put(roundCounter, m);
+			
+			roundCounter++;
+		}
 	}
 
 	private Slot constructSlots(ArrayList<Team> teams, int round, int matchNumber) {
 		Slot s;
 
+		// split current list of teams into the top and bottom halves
 		int mid = teams.size() / 2;
-
 		ArrayList<Team> teams1 = truncate(teams, 0, mid);
 		ArrayList<Team> teams2 = truncate(teams, mid, teams.size());
 
@@ -36,7 +88,7 @@ public class SingleBracket extends Bracket{
 		if (teams2.size() > 1) {
 			s.rightSlot = constructSlots(teams2, round + 1, matchNumber * 2);
 		}
-
+		
 		return s;
 	}
 
@@ -49,20 +101,25 @@ public class SingleBracket extends Bracket{
 
 		return newList;
 	}
+	
+	// check exception
 
 	@Override
 	int getNumberOfTeams() {
-		return 0;
+		return numTeams;
 	}
 
 	@Override
 	int getNumberOfRounds() {
-		return 0;
+		return numRounds;
 	}
 
 	@Override
-	int getNumberOfMatchesInRounds() {
-		return 0;
+	int getNumberOfMatchesInRounds(int round) {
+		if (numMatchesInRound.get(round) == null) { // not within range of the tournament
+			return 0;
+		}
+		return numMatchesInRound.get(round);
 	}
 
 	@Override
@@ -71,6 +128,7 @@ public class SingleBracket extends Bracket{
 	}
 
 	@Override
-	void setMatchWinner() {
+	void setMatchWinner(String teamName, int round, int matchNumber) {
+		
 	}
 }
