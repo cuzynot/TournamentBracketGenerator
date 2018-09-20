@@ -29,7 +29,7 @@ public class SingleBracket extends Bracket{
 		numMatchesInRound = new HashMap<Integer, Integer>();
 
 		// recursive call to construct the binary tree
-		lastSlot = constructSlots(teams, 1, 1);
+		lastSlot = constructSlots(teams, (int)(Math.ceil(Math.log(teams.size()) / Math.log(2))), 1);
 
 		// breadth first search to get 1. number of rounds and 2. number of matches in each round
 		bfs();
@@ -80,11 +80,17 @@ public class SingleBracket extends Bracket{
 		s = new Slot(teams1, teams2, round, matchNumber);
 
 		if (teams1.size() > 1) {
-			s.leftSlot = constructSlots(teams1, round + 1, matchNumber * 2 - 1);
+			s.leftSlot = constructSlots(teams1, round - 1, matchNumber * 2 - 1);
 		}
 		if (teams2.size() > 1) {
-			s.rightSlot = constructSlots(teams2, round + 1, matchNumber * 2);
+			s.rightSlot = constructSlots(teams2, round - 1, matchNumber * 2);
 		}
+		
+		System.out.println("slot " + s.round + " " + s.matchNumber);
+		System.out.print("team 1 "); for (int i = 0; i < teams1.size(); i++) System.out.print(teams1.get(i).getName());
+		System.out.println();
+		System.out.print("team 2 "); for (int i = 0; i < teams2.size(); i++) System.out.print(teams2.get(i).getName());
+		System.out.println();
 
 		return s;
 	}
@@ -97,6 +103,34 @@ public class SingleBracket extends Bracket{
 		}
 
 		return newList;
+	}
+	
+	private Slot getSlot(int round, int matchNumber) {
+		Stack<Boolean> stack = new Stack<Boolean>();
+		for (int i = round; i < numRounds - 1; i++) {
+			if (matchNumber % 2 == 0) {
+				matchNumber /= 2;
+				stack.add(true);
+			} else {
+				matchNumber = (matchNumber + 1) / 2;
+				stack.add(false);
+			}
+		}
+
+		// go backwards from last slot to find the specified slot
+		Slot s = lastSlot;
+		
+		while (!stack.isEmpty()) {
+			if (stack.pop()) {
+				s = s.rightSlot;
+			} else {
+				s = s.leftSlot;
+			}
+			
+			// System.out.println(s.round + " " + s.matchNumber);
+		}
+
+		return s;
 	}
 
 	// check exception
@@ -199,32 +233,6 @@ public class SingleBracket extends Bracket{
 				s = s.leftSlot;
 			}
 		}
-	}
-
-	private Slot getSlot(int round, int matchNumber) {
-		Stack<Boolean> stack = new Stack<Boolean>();
-		for (int i = round; i < numRounds; i++) {
-			if (matchNumber % 2 == 0) {
-				matchNumber /= 2;
-				stack.add(true);
-			} else {
-				matchNumber = (matchNumber + 1) / 2;
-				stack.add(false);
-			}
-		}
-
-		// go backwards from last slot to find the specified slot
-		Slot s = lastSlot;
-
-		while (!stack.isEmpty()) {
-			if (stack.pop()) {
-				s = s.rightSlot;
-			} else {
-				s = s.leftSlot;
-			}
-		}
-
-		return s;
 	}
 
 	// int getMatchNumber(Team team)

@@ -3,6 +3,16 @@ public class Team implements Comparable<Team>{
 	private int seed;
 	private String name;
 	
+	// constructors
+	Team(String name){
+		this.name = name;
+	}
+	
+	Team(String name, int seed){
+		this.name = name;
+		this.seed = seed;
+	}
+	
 	String getName() {
 		return name;
 	}
