@@ -8,6 +8,10 @@ public class SingleGenerator extends Generator{
 	SingleGenerator(ArrayList<Team> teams, boolean seed){
 		if (seed) {
 			teams = organizeSeeds(teams);
+			
+			for (int i = 0; i < teams.size(); i++) {
+				System.out.println(teams.get(i).getName());
+			}
 		}
 
 		sb = new SingleBracket(teams);
@@ -41,6 +45,9 @@ public class SingleGenerator extends Generator{
 				}
 				count++;
 			}
+			
+			teams1 = organizeSeeds(teams1);
+			teams2 = organizeSeeds(teams2);
 
 			// merge
 			for (int i = 0; i < teams1.size(); i++) {
