@@ -12,6 +12,14 @@ public class SingleGenerator extends Generator{
 
 		sb = new SingleBracket(teams);
 	}
+	
+	/**
+	 * organizeSeeds
+	 * This method takes in an arraylist of teams and returns the same list
+	 * in order for the bracket to fill in the teams if the bracket is seeded
+	 * @param An ArrayList of teams
+	 * @return An ArrayList of teams in appropriate seeding order
+	 */
 
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
 		if (teams.size() > 1) {
@@ -46,8 +54,8 @@ public class SingleGenerator extends Generator{
 
 		return teams;
 	}
-
-	Bracket getBracket() {
+	
+	public Bracket getBracket() {
 		return sb;
 	}
 }
