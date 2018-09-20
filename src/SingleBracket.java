@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -27,46 +28,13 @@ public class SingleBracket extends Bracket{
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size();
 		numMatchesInRound = new HashMap<Integer, Integer>();
+		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));
 
 		// recursive call to construct the binary tree
-		lastSlot = constructSlots(teams, (int)(Math.ceil(Math.log(teams.size()) / Math.log(2))), 1);
+		lastSlot = constructSlots(teams, numRounds, 1);
 
 		// breadth first search to get 1. number of rounds and 2. number of matches in each round
 		bfs();
-	}
-
-	private void bfs() {
-		LinkedList<Slot> slots = new LinkedList<Slot>();
-		slots.add(lastSlot);
-
-		numRounds = 0;
-		Stack<Integer> matchesInRound = new Stack<Integer>();
-
-		while (!slots.isEmpty()) {
-			int size = slots.size();
-
-			for (int i = 0; i < size; i++) {
-				Slot s = slots.pop();
-
-				if (s.leftSlot != null) {
-					slots.add(s.leftSlot);
-				}
-				if (s.rightSlot != null) {
-					slots.add(s.rightSlot);
-				}
-			}
-
-			numRounds++;
-			matchesInRound.push(size);
-		}
-
-		int roundCounter = 1;
-		while (!matchesInRound.isEmpty()) {
-			int m = matchesInRound.pop();
-			numMatchesInRound.put(roundCounter, m);
-
-			roundCounter++;
-		}
 	}
 
 	private Slot constructSlots(ArrayList<Team> teams, int round, int matchNumber) {
@@ -86,7 +54,47 @@ public class SingleBracket extends Bracket{
 			s.rightSlot = constructSlots(teams2, round - 1, matchNumber * 2);
 		}
 
+		System.out.println("slot " + s.round + " " + s.matchNumber);
+
+		System.out.print("team1 "); for (int i = 0; i < s.teams1.size(); i++) System.out.print(s.teams1.get(i).getName());
+		System.out.println();
+		System.out.print("team2 "); for (int i = 0; i < s.teams2.size(); i++) System.out.print(s.teams2.get(i).getName());
+		System.out.println();
+		System.out.println();
+
 		return s;
+	}
+
+	private void bfs() {
+		LinkedList<Slot> slots = new LinkedList<Slot>();
+		slots.add(lastSlot);
+
+		Stack<Integer> matchesInRound = new Stack<Integer>();
+
+		while (!slots.isEmpty()) {
+			int size = slots.size();
+
+			for (int i = 0; i < size; i++) {
+				Slot s = slots.pop();
+
+				if (s.leftSlot != null) {
+					slots.add(s.leftSlot);
+				}
+				if (s.rightSlot != null) {
+					slots.add(s.rightSlot);
+				}
+			}
+
+			matchesInRound.push(size);
+		}
+
+		int roundCounter = 1;
+		while (!matchesInRound.isEmpty()) {
+			int m = matchesInRound.pop();
+			numMatchesInRound.put(roundCounter, m);
+
+			roundCounter++;
+		}
 	}
 
 	private ArrayList<Team> truncate (ArrayList<Team> teams, int left, int right){
@@ -148,15 +156,20 @@ public class SingleBracket extends Bracket{
 	@Override
 	String[][] getTeamsInMatch(int round, int matchNumber) {
 		Slot s = getSlot(round, matchNumber);
+		
+		String[][] teamNames = new String[2][];
 
-		// fill 2d array
-		String[][] teamNames = new String[2][Integer.max(s.teams1.size(), s.teams2.size())];
-
-		for (int i = 0; i < s.teams1.size(); i++) {
-			teamNames[0][i] = s.teams1.get(i).getName();
-		}
-		for (int i = 0; i < s.teams2.size(); i++) {
-			teamNames[1][i] = s.teams2.get(i).getName();
+		if (s != null) {
+			// fill 2d array
+			teamNames[0] = new String[s.teams1.size()];
+			teamNames[1] = new String[s.teams2.size()];
+			
+			for (int i = 0; i < s.teams1.size(); i++) {
+				teamNames[0][i] = s.teams1.get(i).getName();
+			}
+			for (int i = 0; i < s.teams2.size(); i++) {
+				teamNames[1][i] = s.teams2.get(i).getName();
+			}
 		}
 
 		return teamNames;
@@ -174,6 +187,8 @@ public class SingleBracket extends Bracket{
 				path.add(false);
 			}
 		}
+
+		System.out.println(path);
 
 		// go backwards from last slot to find the specified slot
 		Slot s = lastSlot;
