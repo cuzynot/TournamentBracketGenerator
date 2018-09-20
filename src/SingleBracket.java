@@ -85,12 +85,6 @@ public class SingleBracket extends Bracket{
 		if (teams2.size() > 1) {
 			s.rightSlot = constructSlots(teams2, round - 1, matchNumber * 2);
 		}
-		
-		System.out.println("slot " + s.round + " " + s.matchNumber);
-		System.out.print("team 1 "); for (int i = 0; i < teams1.size(); i++) System.out.print(teams1.get(i).getName());
-		System.out.println();
-		System.out.print("team 2 "); for (int i = 0; i < teams2.size(); i++) System.out.print(teams2.get(i).getName());
-		System.out.println();
 
 		return s;
 	}
@@ -104,30 +98,28 @@ public class SingleBracket extends Bracket{
 
 		return newList;
 	}
-	
+
 	private Slot getSlot(int round, int matchNumber) {
 		Stack<Boolean> stack = new Stack<Boolean>();
-		for (int i = round; i < numRounds - 1; i++) {
+		for (int i = round; i < numRounds; i++) {
 			if (matchNumber % 2 == 0) {
 				matchNumber /= 2;
-				stack.add(true);
+				stack.push(true);
 			} else {
 				matchNumber = (matchNumber + 1) / 2;
-				stack.add(false);
+				stack.push(false);
 			}
 		}
 
 		// go backwards from last slot to find the specified slot
 		Slot s = lastSlot;
-		
+
 		while (!stack.isEmpty()) {
 			if (stack.pop()) {
 				s = s.rightSlot;
 			} else {
 				s = s.leftSlot;
 			}
-			
-			// System.out.println(s.round + " " + s.matchNumber);
 		}
 
 		return s;
@@ -155,7 +147,6 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	String[][] getTeamsInMatch(int round, int matchNumber) {
-
 		Slot s = getSlot(round, matchNumber);
 
 		// fill 2d array
@@ -173,7 +164,6 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	void setMatchWinner(String teamName, int round, int matchNumber) {
-
 		ArrayList<Boolean> path = new ArrayList<Boolean>();
 		for (int i = round; i < numRounds; i++) {
 			if (matchNumber % 2 == 0) {
