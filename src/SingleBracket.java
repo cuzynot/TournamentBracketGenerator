@@ -188,39 +188,65 @@ public class SingleBracket extends Bracket{
 
 		ArrayList<Team> teamsRemove = new ArrayList<Team>();
 
+		boolean foundInTeams1 = false;
+		boolean foundInTeams2 = false;
+
+		// loop through teams1 to search for the team
 		for (int i = 0; i < s.teams1.size(); i++) {
-			if (!(s.teams1.get(i).getName().equals(teamName))) {
-				teamsRemove.add(s.teams1.remove(i));
-				i--;
+			if ((s.teams1.get(i).getName().equals(teamName))) {
+				foundInTeams1 = true;
+				break;
 			}
 		}
 
-		for (int i = 0; i < s.teams2.size(); i++) {
-			if (!(s.teams2.get(i).getName().equals(teamName))) {
-				teamsRemove.add(s.teams2.remove(i));
-				i--;
+		// if not found in teams1
+		if (!foundInTeams1) {
+			// loop through teams2
+			for (int i = 0; i < s.teams1.size(); i++) {
+				if ((s.teams2.get(i).getName().equals(teamName))) {
+					foundInTeams2 = true;
+					break;
+				}
 			}
 		}
 
-		if (s.teams1.size() == 1) {
+		if (foundInTeams1) {
+			for (int i = 0; i < s.teams1.size(); i++) {
+				if (!(s.teams1.get(i).getName().equals(teamName))) {
+					teamsRemove.add(s.teams1.remove(i));
+					i--;
+				}
+			}
+		} else if (foundInTeams2) {
+			for (int i = 0; i < s.teams2.size(); i++) {
+				if (!(s.teams2.get(i).getName().equals(teamName))) {
+					teamsRemove.add(s.teams2.remove(i));
+					i--;
+				}
+			}
+		}
+
+		if (foundInTeams1) {
 			s.winner = s.teams1.get(0);
-		} else {
+		} else if (foundInTeams2){
 			s.winner = s.teams2.get(0);
 		}
 
-		s = lastSlot;
+		if (foundInTeams1 || foundInTeams2) {
+			s = lastSlot;
 
-		for (int i = path.size() - 1; i > 0; i--) {
-			for (int j = 0; j < teamsRemove.size(); j++) {
-				s.teams1.remove(teamsRemove.get(i));
-			}
-			for (int j = 0; j < teamsRemove.size(); j++) {
-				s.teams2.remove(teamsRemove.get(i));
-			}
-			if (path.get(i)) {
-				s = s.rightSlot;
-			} else {
-				s = s.leftSlot;
+			for (int i = path.size() - 1; i > 0; i--) {
+				for (int j = 0; j < teamsRemove.size(); j++) {
+					s.teams1.remove(teamsRemove.get(i));
+				}
+				for (int j = 0; j < teamsRemove.size(); j++) {
+					s.teams2.remove(teamsRemove.get(i));
+				}
+				if (path.get(i)) {
+					s = s.rightSlot;
+				} else {
+					s = s.leftSlot;
+				}
 			}
 		}
 	}
