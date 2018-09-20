@@ -2,13 +2,12 @@
 public abstract class Generator {
 	Bracket bracket;
 	
-//	Generator(boolean single, boolean seed){
-//		if (single) {
-//			
-//		}
-//	}
-	
-	Bracket getBracket() {
+	/**
+	 * getBracket
+	 * This methods returns the Bracket generated.
+	 * @return The generated Bracket.
+	 */
+	public Bracket getBracket() {
 		return bracket;
 	}
 }

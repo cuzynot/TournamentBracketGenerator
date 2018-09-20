@@ -125,10 +125,7 @@ public class SingleBracket extends Bracket{
 		Slot s = getSlot(round, matchNumber);
 
 		// fill 2d array
-		String[][] teamNames = new String[2][];
-
-		teamNames[0] = new String[s.teams1.size()];
-		teamNames[1] = new String[s.teams2.size()];
+		String[][] teamNames = new String[2][Integer.max(s.teams1.size(), s.teams2.size())];
 
 		for (int i = 0; i < s.teams1.size(); i++) {
 			teamNames[0][i] = s.teams1.get(i).getName();
