@@ -21,7 +21,7 @@ public class SingleBracket extends Bracket{
 		// recursive call to construct the binary tree
 		constructSlots(teams, numRounds);
 	}
-	
+
 	private class Slot {
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot, parentSlot;
@@ -80,6 +80,14 @@ public class SingleBracket extends Bracket{
 		return newList;
 	}
 
+	// check if round and match numbers are in bound
+	private boolean inBounds(int round, int matchNumber) {
+		if (round >= 0 && round <= numRounds && matchNumber > 0 && matchNumber < slots[round].size()) {
+			return true;
+		}
+		return false;
+	}
+
 	// check exception
 
 	@Override
@@ -102,11 +110,11 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	public String[][] getTeamsInMatch(int round, int matchNumber) {
-		Slot s = slots[round].get(matchNumber);
-
 		String[][] teamNames = new String[2][];
 
-		if (s != null) {
+		if (inBounds(round, matchNumber)) {
+			Slot s = slots[round].get(matchNumber);
+
 			// fill 2d array
 			teamNames[0] = new String[s.teams1.size()];
 			teamNames[1] = new String[s.teams2.size()];
@@ -124,54 +132,56 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	public void setMatchWinner(String teamName, int round, int matchNumber) {
-		Slot s = slots[round].get(matchNumber);
+		if (inBounds(round, matchNumber)) {
+			Slot s = slots[round].get(matchNumber);
 
-		ArrayList<Team> teamsRemove = new ArrayList<Team>();
+			ArrayList<Team> teamsRemove = new ArrayList<Team>();
 
-		boolean foundInTeams1 = false;
-		boolean foundInTeams2 = false;
+			boolean foundInTeams1 = false;
+			boolean foundInTeams2 = false;
 
-		// loop through teams1 to search for the team
-		for (int i = 0; i < s.teams1.size(); i++) {
-			if ((s.teams1.get(i).getName().equals(teamName))) {
-				foundInTeams1 = true;
-				break;
-			}
-		}
-
-		// if not found in teams1
-		if (!foundInTeams1) {
-			// loop through teams2
-			for (int i = 0; i < s.teams2.size(); i++) {
-				if ((s.teams2.get(i).getName().equals(teamName))) {
-					foundInTeams2 = true;
+			// loop through teams1 to search for the team
+			for (int i = 0; i < s.teams1.size(); i++) {
+				if ((s.teams1.get(i).getName().equals(teamName))) {
+					foundInTeams1 = true;
 					break;
 				}
 			}
-		}
 
-		if (foundInTeams1 || foundInTeams2) {
-			// remove other teams that lost and add to the teams-to-remove list
-			for (int i = 0; i < s.teams1.size(); i++) {
-				if (!(s.teams1.get(i).getName().equals(teamName))) {
-					teamsRemove.add(s.teams1.remove(i));
-					i--;
+			// if not found in teams1
+			if (!foundInTeams1) {
+				// loop through teams2
+				for (int i = 0; i < s.teams2.size(); i++) {
+					if ((s.teams2.get(i).getName().equals(teamName))) {
+						foundInTeams2 = true;
+						break;
+					}
 				}
 			}
 
-			for (int i = 0; i < s.teams2.size(); i++) {
-				if (!(s.teams2.get(i).getName().equals(teamName))) {
-					teamsRemove.add(s.teams2.remove(i));
-					i--;
+			if (foundInTeams1 || foundInTeams2) {
+				// remove other teams that lost and add to the teams-to-remove list
+				for (int i = 0; i < s.teams1.size(); i++) {
+					if (!(s.teams1.get(i).getName().equals(teamName))) {
+						teamsRemove.add(s.teams1.remove(i));
+						i--;
+					}
 				}
-			}
 
-			// remove such teams from the slot's parents
-			while (s.round < numRounds) {
-				s = s.parentSlot;
-				for (int j = 0; j < teamsRemove.size(); j++) {
-					s.teams1.remove(teamsRemove.get(j));
-					s.teams2.remove(teamsRemove.get(j));
+				for (int i = 0; i < s.teams2.size(); i++) {
+					if (!(s.teams2.get(i).getName().equals(teamName))) {
+						teamsRemove.add(s.teams2.remove(i));
+						i--;
+					}
+				}
+
+				// remove such teams from the slot's parents
+				while (s.round < numRounds) {
+					s = s.parentSlot;
+					for (int j = 0; j < teamsRemove.size(); j++) {
+						s.teams1.remove(teamsRemove.get(j));
+						s.teams2.remove(teamsRemove.get(j));
+					}
 				}
 			}
 		}
