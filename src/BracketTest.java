@@ -16,8 +16,10 @@ class BracketTest {
 		SingleBracket bracket = (SingleBracket)generator.getBracket();
 
 		System.out.println("Round 1, match 1: " + bracket.getTeamsInMatch(2, 1)[0][0] + " " + bracket.getTeamsInMatch(2, 1)[1][0]);
-
-		bracket.setMatchWinner("3", 1, 1);
+		
+		bracket.setMatchWinner("5", 1, 2);
+		
+		System.out.println("Round 1, match 1: " + bracket.getTeamsInMatch(2, 1)[0][0] + " " + bracket.getTeamsInMatch(2, 1)[1][0]);
 	}
 
 }
