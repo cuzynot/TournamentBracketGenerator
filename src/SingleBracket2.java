@@ -12,7 +12,6 @@ public class SingleBracket2 extends Bracket{
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot;
 		int round, matchNumber;
-		Team winner;
 
 		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
 			this.teams1 = team1;
@@ -255,12 +254,6 @@ public class SingleBracket2 extends Bracket{
 					s = s.leftSlot;
 				}
 			}
-		}
-		
-		if (foundInTeams1) {
-			s.winner = s.teams1.get(0);
-		} else if (foundInTeams2){
-			s.winner = s.teams2.get(0);
 		}
 	}
 
