@@ -6,11 +6,11 @@ import java.util.Stack;
 public class SingleBracket extends Bracket{
 	int numRounds;
 	int numTeams;
-	HashMap<Integer, Integer> numMatchesInRound;
+	int[] numMatchesInRound;
 
 	private class Slot {
 		ArrayList<Team> teams1, teams2;
-		Slot leftSlot, rightSlot;
+		Slot leftSlot, rightSlot, parentSlot;
 		int round, matchNumber;
 		Team winner;
 
@@ -22,21 +22,26 @@ public class SingleBracket extends Bracket{
 		}
 	}
 
-	private Slot lastSlot;
+	private ArrayList<Slot> slots[];
 
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size();
-		numMatchesInRound = new HashMap<Integer, Integer>();
 		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));
+		numMatchesInRound = new int[numRounds + 1];
+
+		slots = new ArrayList[numRounds + 1];
+
+		// fill in first spot to be 1-indexed
+		for (int i = 1; i <= numRounds; i++) {
+			slots[i] = new ArrayList<Slot>();
+			slots[i].add(null);
+		}
 
 		// recursive call to construct the binary tree
-		lastSlot = constructSlots(teams, numRounds, 1);
-
-		// breadth first search to get 1. number of rounds and 2. number of matches in each round
-		bfs();
+		constructSlots(teams, numRounds);
 	}
 
-	private Slot constructSlots(ArrayList<Team> teams, int round, int matchNumber) {
+	private Slot constructSlots(ArrayList<Team> teams, int round) {
 		Slot s;
 
 		// split current list of teams into the top and bottom halves
@@ -44,14 +49,19 @@ public class SingleBracket extends Bracket{
 		ArrayList<Team> teams1 = truncate(teams, 0, mid);
 		ArrayList<Team> teams2 = truncate(teams, mid, teams.size());
 
-		s = new Slot(teams1, teams2, round, matchNumber);
+		s = new Slot(teams1, teams2, round, slots[round].size());
 
-		if (teams1.size() > 1) {
-			s.leftSlot = constructSlots(teams1, round - 1, matchNumber * 2 - 1);
+		if (teams1.size() > 1 && round - 1 > 0) {
+			s.leftSlot = constructSlots(teams1, round - 1);
+			s.leftSlot.parentSlot = s;
 		}
-		if (teams2.size() > 1) {
-			s.rightSlot = constructSlots(teams2, round - 1, matchNumber * 2);
+		if (teams2.size() > 1 && round - 1 > 0) {
+			s.rightSlot = constructSlots(teams2, round - 1);
+			s.rightSlot.parentSlot = s;
 		}
+
+		slots[round].add(s);
+		numMatchesInRound[round]++;
 
 		System.out.println("slot " + s.round + " " + s.matchNumber);
 
@@ -64,38 +74,6 @@ public class SingleBracket extends Bracket{
 		return s;
 	}
 
-	private void bfs() {
-		LinkedList<Slot> slots = new LinkedList<Slot>();
-		slots.add(lastSlot);
-
-		Stack<Integer> matchesInRound = new Stack<Integer>();
-
-		while (!slots.isEmpty()) {
-			int size = slots.size();
-
-			for (int i = 0; i < size; i++) {
-				Slot s = slots.pop();
-
-				if (s.leftSlot != null) {
-					slots.add(s.leftSlot);
-				}
-				if (s.rightSlot != null) {
-					slots.add(s.rightSlot);
-				}
-			}
-
-			matchesInRound.push(size);
-		}
-
-		int roundCounter = 1;
-		while (!matchesInRound.isEmpty()) {
-			int m = matchesInRound.pop();
-			numMatchesInRound.put(roundCounter, m);
-
-			roundCounter++;
-		}
-	}
-
 	private ArrayList<Team> truncate (ArrayList<Team> teams, int left, int right){
 		ArrayList<Team> newList = new ArrayList<Team>();
 
@@ -104,32 +82,6 @@ public class SingleBracket extends Bracket{
 		}
 
 		return newList;
-	}
-
-	private Slot getSlot(int round, int matchNumber) {
-		Stack<Boolean> stack = new Stack<Boolean>();
-		for (int i = round; i < numRounds; i++) {
-			if (matchNumber % 2 == 0) {
-				matchNumber /= 2;
-				stack.push(true);
-			} else {
-				matchNumber = (matchNumber + 1) / 2;
-				stack.push(false);
-			}
-		}
-
-		// go backwards from last slot to find the specified slot
-		Slot s = lastSlot;
-
-		while (!stack.isEmpty()) {
-			if (stack.pop()) {
-				s = s.rightSlot;
-			} else {
-				s = s.leftSlot;
-			}
-		}
-
-		return s;
 	}
 
 	// check exception
@@ -146,23 +98,23 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	int getNumberOfMatchesInRounds(int round) {
-		if (numMatchesInRound.get(round) == null) { // not within range of the tournament
-			return 0;
+		if (round <= numRounds) {
+			return numMatchesInRound[round];
 		}
-		return numMatchesInRound.get(round);
+		return -1;
 	}
 
 	@Override
 	String[][] getTeamsInMatch(int round, int matchNumber) {
-		Slot s = getSlot(round, matchNumber);
-		
+		Slot s = slots[round].get(matchNumber);
+
 		String[][] teamNames = new String[2][];
 
 		if (s != null) {
 			// fill 2d array
 			teamNames[0] = new String[s.teams1.size()];
 			teamNames[1] = new String[s.teams2.size()];
-			
+
 			for (int i = 0; i < s.teams1.size(); i++) {
 				teamNames[0][i] = s.teams1.get(i).getName();
 			}
@@ -176,37 +128,12 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	void setMatchWinner(String teamName, int round, int matchNumber) {
-		ArrayList<Boolean> path = new ArrayList<Boolean>();
-		for (int i = round; i < numRounds; i++) {
-			if (matchNumber % 2 == 0) {
-				matchNumber /= 2;
-				path.add(true);
-			} else {
-				matchNumber = (matchNumber + 1) / 2;
-				path.add(false);
-			}
-		}
-
-		// go backwards from last slot to find the specified slot
-		Slot s = lastSlot;
-
-		for (int i = path.size() - 1; i >= 0; i--) {
-			if (path.get(i)) {
-				s = s.rightSlot;
-			} else {
-				s = s.leftSlot;
-			}
-		}
+		Slot s = slots[round].get(matchNumber);
 
 		ArrayList<Team> teamsRemove = new ArrayList<Team>();
 
 		boolean foundInTeams1 = false;
 		boolean foundInTeams2 = false;
-		
-		System.out.println(s.round + " " + s.matchNumber);
-		
-		System.out.println("size " + s.teams2.size());
-		
 
 		// loop through teams1 to search for the team
 		for (int i = 0; i < s.teams1.size(); i++) {
@@ -226,49 +153,38 @@ public class SingleBracket extends Bracket{
 				}
 			}
 		}
-		
-		// remove other teams that lost and add to the teams-to-remove list
+
 		if (foundInTeams1 || foundInTeams2) {
+			// remove other teams that lost and add to the teams-to-remove list
 			for (int i = 0; i < s.teams1.size(); i++) {
 				if (!(s.teams1.get(i).getName().equals(teamName))) {
 					teamsRemove.add(s.teams1.remove(i));
 					i--;
 				}
 			}
-			
+
 			for (int i = 0; i < s.teams2.size(); i++) {
 				if (!(s.teams2.get(i).getName().equals(teamName))) {
 					teamsRemove.add(s.teams2.remove(i));
 					i--;
 				}
 			}
-		}
 
-		if (foundInTeams1 || foundInTeams2) {
-			s = lastSlot;
-
-			for (int i = path.size() - 1; i >= 0; i--) {
+			// remove such teams from the slot's parents
+			while (s.round < numRounds) {
+				s = s.parentSlot;
 				for (int j = 0; j < teamsRemove.size(); j++) {
 					s.teams1.remove(teamsRemove.get(j));
 					s.teams2.remove(teamsRemove.get(j));
 				}
-				
-				if (path.get(i)) {
-					s = s.rightSlot;
-				} else {
-					s = s.leftSlot;
-				}
 			}
 		}
-		
+
 		if (foundInTeams1) {
 			s.winner = s.teams1.get(0);
 		} else if (foundInTeams2){
 			s.winner = s.teams2.get(0);
 		}
 	}
-
-	// int getMatchNumber(Team team)
-	// int getRoundNumber(Team team)
-
 }
+
