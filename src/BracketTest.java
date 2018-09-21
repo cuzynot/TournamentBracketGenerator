@@ -10,7 +10,7 @@ class BracketTest {
 		for (int i = 1; i < 8; i++) {
 			teams.add(new Team(Integer.toString(i), i));
 		}
-
+		
 		generator = new SingleGenerator(teams, true);
 
 		SingleBracket bracket = (SingleBracket)generator.getBracket();

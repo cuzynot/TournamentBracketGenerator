@@ -5,21 +5,6 @@ public class SingleBracket extends Bracket{
 	int numTeams;
 	int[] numMatchesInRound;
 
-	private class Slot {
-		ArrayList<Team> teams1, teams2;
-		Slot leftSlot, rightSlot, parentSlot;
-		int round, matchNumber;
-
-		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
-			this.teams1 = team1;
-			this.teams2 = team2;
-			this.round = round;
-			this.matchNumber = matchNumber;
-		}
-	}
-
-	private ArrayList<Slot> slots[];
-
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size();
 		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));
@@ -36,6 +21,21 @@ public class SingleBracket extends Bracket{
 		// recursive call to construct the binary tree
 		constructSlots(teams, numRounds);
 	}
+	
+	private class Slot {
+		ArrayList<Team> teams1, teams2;
+		Slot leftSlot, rightSlot, parentSlot;
+		int round, matchNumber;
+
+		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
+			this.teams1 = team1;
+			this.teams2 = team2;
+			this.round = round;
+			this.matchNumber = matchNumber;
+		}
+	}
+
+	private ArrayList<Slot> slots[];
 
 	private Slot constructSlots(ArrayList<Team> teams, int round) {
 		Slot s;
@@ -83,17 +83,17 @@ public class SingleBracket extends Bracket{
 	// check exception
 
 	@Override
-	int getNumberOfTeams() {
+	public int getNumberOfTeams() {
 		return numTeams;
 	}
 
 	@Override
-	int getNumberOfRounds() {
+	public int getNumberOfRounds() {
 		return numRounds;
 	}
 
 	@Override
-	int getNumberOfMatchesInRounds(int round) {
+	public int getNumberOfMatchesInRounds(int round) {
 		if (round <= numRounds) {
 			return numMatchesInRound[round];
 		}
@@ -101,7 +101,7 @@ public class SingleBracket extends Bracket{
 	}
 
 	@Override
-	String[][] getTeamsInMatch(int round, int matchNumber) {
+	public String[][] getTeamsInMatch(int round, int matchNumber) {
 		Slot s = slots[round].get(matchNumber);
 
 		String[][] teamNames = new String[2][];
@@ -123,7 +123,7 @@ public class SingleBracket extends Bracket{
 	}
 
 	@Override
-	void setMatchWinner(String teamName, int round, int matchNumber) {
+	public void setMatchWinner(String teamName, int round, int matchNumber) {
 		Slot s = slots[round].get(matchNumber);
 
 		ArrayList<Team> teamsRemove = new ArrayList<Team>();

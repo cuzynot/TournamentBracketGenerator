@@ -13,11 +13,11 @@ public class Team implements Comparable<Team>{
 		this.seed = seed;
 	}
 	
-	String getName() {
+	public String getName() {
 		return name;
 	}
 	
-	int getSeed() {
+	public int getSeed() {
 		return seed;
 	}
 

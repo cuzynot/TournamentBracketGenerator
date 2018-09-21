@@ -1,8 +1,8 @@
 
 public abstract class Bracket {
-	abstract int getNumberOfTeams();
-	abstract int getNumberOfRounds();
-	abstract int getNumberOfMatchesInRounds(int round);
-	abstract String[][] getTeamsInMatch(int round, int matchNumber);
-	abstract void setMatchWinner(String teamName, int round, int matchNumber);
+	public abstract int getNumberOfTeams();
+	public abstract int getNumberOfRounds();
+	public abstract int getNumberOfMatchesInRounds(int round);
+	public abstract String[][] getTeamsInMatch(int round, int matchNumber);
+	public abstract void setMatchWinner(String teamName, int round, int matchNumber);
 }
