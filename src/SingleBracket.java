@@ -59,14 +59,6 @@ public class SingleBracket extends Bracket{
 		slots[round].add(s);
 		numMatchesInRound[round]++;
 
-		System.out.println("slot " + s.round + " " + s.matchNumber);
-
-		System.out.print("team1 "); for (int i = 0; i < s.teams1.size(); i++) System.out.print(s.teams1.get(i).getName());
-		System.out.println();
-		System.out.print("team2 "); for (int i = 0; i < s.teams2.size(); i++) System.out.print(s.teams2.get(i).getName());
-		System.out.println();
-		System.out.println();
-
 		return s;
 	}
 
@@ -101,7 +93,7 @@ public class SingleBracket extends Bracket{
 	}
 
 	@Override
-	public int getNumberOfMatchesInRounds(int round) {
+	public int getNumberOfMatchesInRound(int round) {
 		if (round <= numRounds) {
 			return numMatchesInRound[round];
 		}
