@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Stack;
 
 public class SingleBracket extends Bracket{
 	int numRounds;
@@ -12,7 +9,6 @@ public class SingleBracket extends Bracket{
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot, parentSlot;
 		int round, matchNumber;
-		Team winner;
 
 		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
 			this.teams1 = team1;
@@ -178,12 +174,6 @@ public class SingleBracket extends Bracket{
 					s.teams2.remove(teamsRemove.get(j));
 				}
 			}
-		}
-
-		if (foundInTeams1) {
-			s.winner = s.teams1.get(0);
-		} else if (foundInTeams2){
-			s.winner = s.teams2.get(0);
 		}
 	}
 }
