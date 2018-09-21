@@ -134,17 +134,17 @@ public class SingleBracket2 extends Bracket{
 	// check exception
 
 	@Override
-	int getNumberOfTeams() {
+	public int getNumberOfTeams() {
 		return numTeams;
 	}
 
 	@Override
-	int getNumberOfRounds() {
+	public int getNumberOfRounds() {
 		return numRounds;
 	}
 
 	@Override
-	int getNumberOfMatchesInRounds(int round) {
+	public int getNumberOfMatchesInRounds(int round) {
 		if (numMatchesInRound.get(round) == null) { // not within range of the tournament
 			return 0;
 		}
@@ -152,7 +152,7 @@ public class SingleBracket2 extends Bracket{
 	}
 
 	@Override
-	String[][] getTeamsInMatch(int round, int matchNumber) {
+	public String[][] getTeamsInMatch(int round, int matchNumber) {
 		Slot s = getSlot(round, matchNumber);
 		
 		String[][] teamNames = new String[2][];
@@ -174,7 +174,7 @@ public class SingleBracket2 extends Bracket{
 	}
 
 	@Override
-	void setMatchWinner(String teamName, int round, int matchNumber) {
+	public void setMatchWinner(String teamName, int round, int matchNumber) {
 		ArrayList<Boolean> path = new ArrayList<Boolean>();
 		for (int i = round; i < numRounds; i++) {
 			if (matchNumber % 2 == 0) {
