@@ -176,7 +176,6 @@ public class SingleBracket extends Bracket{
 	 */
 	@Override
 	public String[][] getTeamsInMatch(int round, int matchNumber) {
-
 		//Store the names of teams that could be playing in each side of the match
 		String[][] teamNames = new String[2][];
 
