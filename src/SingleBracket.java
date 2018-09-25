@@ -133,8 +133,6 @@ public class SingleBracket extends Bracket{
 		return false;
 	} //End of inBounds
 
-	// check exception ????
-
 	/**
 	 * getNumberOfTeams
 	 * This method returns the number of teams in the tournament
@@ -174,8 +172,7 @@ public class SingleBracket extends Bracket{
 	 * getTeamsInMatch
 	 * This method returns the teams that could play in a match
 	 * @param Integers to represent the round and match numbers of the match
-	 * @return A 2D String array that holds the names of the teams that
-could be playing on each side of the match
+	 * @return A 2D String array that holds the names of the teams that could be playing on each side of the match
 	 */
 	@Override
 	public String[][] getTeamsInMatch(int round, int matchNumber) {
