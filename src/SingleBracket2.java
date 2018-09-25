@@ -144,7 +144,7 @@ public class SingleBracket2 extends Bracket{
 	}
 
 	@Override
-	public int getNumberOfMatchesInRounds(int round) {
+	public int getNumberOfMatchesInRound(int round) {
 		if (numMatchesInRound.get(round) == null) { // not within range of the tournament
 			return 0;
 		}
