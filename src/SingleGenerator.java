@@ -18,11 +18,6 @@ public class SingleGenerator extends Generator{
 			//Sort the teams in ascending order by seed
 			Collections.sort(teams);
 			teams = organizeSeeds(teams);
-			
-			for (int i = 0; i < teams.size(); i++) {
-				System.out.println(teams.get(i).getSeed());
-			}
-			System.out.println();
 		}
 
 		sb = new SingleBracket(teams);
