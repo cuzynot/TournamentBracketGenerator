@@ -15,7 +15,14 @@ public class SingleGenerator extends Generator{
 
 	SingleGenerator(ArrayList<Team> teams, boolean seed){
 		if (seed) {
+			//Sort the teams in ascending order by seed
+			Collections.sort(teams);
 			teams = organizeSeeds(teams);
+			
+			for (int i = 0; i < teams.size(); i++) {
+				System.out.println(teams.get(i).getSeed());
+			}
+			System.out.println();
 		}
 
 		sb = new SingleBracket(teams);
@@ -31,9 +38,6 @@ public class SingleGenerator extends Generator{
 
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
 		if (teams.size() > 1) {
-			//Sort the teams in ascending order by seed
-			Collections.sort(teams);
-
 			//Make two new ArrayLists to hold the split list of teams
 			ArrayList<Team> teams1 = new ArrayList<Team>();
 			ArrayList<Team> teams2 = new ArrayList<Team>();

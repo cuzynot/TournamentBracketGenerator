@@ -50,8 +50,7 @@ public class SingleBracket extends Bracket{
 		 * @param An ArrayList of teams that could play on one side of the match, an ArrayList of teams that could play on the other side of the match,
 		 *   an integer to store the match's round number, and an integer to store the match's match number (within the round)
 		 */
-		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int
-				matchNumber) {
+		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
 			this.teams1 = team1;
 			this.teams2 = team2;
 			this.round = round;
@@ -70,7 +69,19 @@ public class SingleBracket extends Bracket{
 		Slot s; //To store the slot that will be made
 
 		//Split current list of teams into the top and bottom halves (teams that could play on the two sides of the match)
-		int mid = teams.size() / 2;
+		int mid;
+		// if there is an even number of teams
+		if (teams.size() % 2 == 0) {
+			mid = teams.size() / 2;
+		} else {
+			// if there should be more teams on the bottom
+			if ((teams.size() - 1) / 2 % 2 == 0) {
+				mid = teams.size() / 2 + 1;
+			} else {
+				mid = teams.size() / 2;
+			}
+		}
+
 		ArrayList<Team> teams1 = truncate(teams, 0, mid);
 		ArrayList<Team> teams2 = truncate(teams, mid, teams.size());
 
@@ -126,8 +137,7 @@ public class SingleBracket extends Bracket{
 	 */
 	private boolean inBounds(int round, int matchNumber) {
 		//Return true if there is a match corresponding to the round and match number
-		if (round >= 0 && round <= numRounds && matchNumber > 0 &&
-				matchNumber < slots[round].size()) {
+		if (round >= 0 && round <= numRounds && matchNumber > 0 &&matchNumber < slots[round].size()) {
 			return true;
 		}
 		return false;

@@ -3,29 +3,66 @@ import java.util.ArrayList;
 class BracketTest {
 
 	public static void main(String[] args) {
-		
-		long first = System.currentTimeMillis();
 
 		ArrayList<Team> teams = new ArrayList<Team>();
 		SingleGenerator generator;
 
-		for (int i = 1; i < 1000; i++) {
+		for (int i = 1; i <= 5; i++) {
 			teams.add(new Team(Integer.toString(i), i));
 		}
 
 		generator = new SingleGenerator(teams, true);
 
-		SingleBracket bracket = (SingleBracket)generator.getBracket();
+		Bracket bracket = generator.getBracket();
 		
-		for (int i = 1; i <= bracket.getNumberOfRounds(); i++) {
-			for (int j = 1; j <= bracket.getNumberOfMatchesInRound(i); j++) {
-				String[][] s = bracket.getTeamsInMatch(i, j);
+		String[][] s;
+		
+		s = bracket.getTeamsInMatch(1, 1);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
 			}
 		}
-		
-		long last = System.currentTimeMillis();
-		
-		System.out.println(last - first);
+		System.out.println();
+		s = bracket.getTeamsInMatch(2, 1);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
+			}
+		}
+		System.out.println();
+		s = bracket.getTeamsInMatch(2, 2);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
+			}
+		}
+
+		new Display(generator.getBracket());
+
+
+		//		long first = System.currentTimeMillis();
+		//
+		//		ArrayList<Team> teams = new ArrayList<Team>();
+		//		SingleGenerator generator;
+		//
+		//		for (int i = 1; i < 1000; i++) {
+		//			teams.add(new Team(Integer.toString(i), i));
+		//		}
+		//
+		//		generator = new SingleGenerator(teams, true);
+		//
+		//		SingleBracket bracket = (SingleBracket)generator.getBracket();
+		//		
+		//		for (int i = 1; i <= bracket.getNumberOfRounds(); i++) {
+		//			for (int j = 1; j <= bracket.getNumberOfMatchesInRound(i); j++) {
+		//				String[][] s = bracket.getTeamsInMatch(i, j);
+		//			}
+		//		}
+		//		
+		//		long last = System.currentTimeMillis();
+		//		
+		//		System.out.println(last - first);
 	}
 
 }
