@@ -129,8 +129,6 @@ public class SingleBracket extends Bracket{
 		return false;
 	} //End of inBounds
 
-	// check exception ????
-
 	@Override
 	public int getNumberOfTeams() {
 		return numTeams;
@@ -152,7 +150,6 @@ public class SingleBracket extends Bracket{
 
 	@Override
 	public String[][] getTeamsInMatch(int round, int matchNumber) {
-
 		//Store the names of teams that could be playing in each side of the match
 		String[][] teamNames = new String[2][];
 
