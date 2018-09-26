@@ -1,7 +1,6 @@
 /**
  * [SingleBracket.java]
- * Single elimination bracket object (that can update as a tournament
-progresses)
+ * Single elimination bracket object (that can update as a tournament progresses)
  * Authors: Yili Liu and Brian Li
  * September 21, 2018
  */
@@ -18,12 +17,11 @@ public class SingleBracket extends Bracket{
 	/**
 	 * SingleBracket
 	 * Constructor that makes a single elimination bracket given a list of teams
-	 * @param An ArrayList of teams
+	 * @param teams, An ArrayList of teams
 	 */
 	SingleBracket(ArrayList<Team> teams) {
 		numTeams = teams.size(); //Store the number of teams
-		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));
-		//Find the number of rounds necessary for the amount of teams
+		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));//Find the number of rounds necessary for the amount of teams
 		numMatchesInRound = new int[numRounds + 1]; //Set the size of the array storing the number of matches per round
 
 		slots = new ArrayList[numRounds + 1]; //Set the initital size of the slots list
@@ -47,8 +45,10 @@ public class SingleBracket extends Bracket{
 		/*
 		 * Slots
 		 * Constructor that makes a slot object given possible teams, a round number, and a match number
-		 * @param An ArrayList of teams that could play on one side of the match, an ArrayList of teams that could play on the other side of the match,
-		 *   an integer to store the match's round number, and an integer to store the match's match number (within the round)
+		 * @param team1, An ArrayList of teams that could play on one side of the match
+		 * @param team2, An ArrayList of teams that could play on the other side of the match
+		 * @param round, An integer to store the match's round number
+		 * @param matchNumber, An integer to store the match's match number (within the round)
 		 */
 		Slot(ArrayList<Team> team1, ArrayList<Team> team2, int round, int matchNumber) {
 			this.teams1 = team1;
@@ -58,17 +58,17 @@ public class SingleBracket extends Bracket{
 		}
 	} //End of constructor
 
-	/**
+	/*
 	 * constructSlots
 	 * This method makes a slot with the given teams and round number, and recursively generates more slots until
 	 *   there are enough slots to represent the entire bracket
-	 * @param An ArrayList of teams that could play in the match represented by the slot, and an integer to store the match's round number
-	 * @return A slot made in the method
+	 * @param teams, An ArrayList of teams that could play in the match represented by the slot
+	 * @param round, An integer to store the match's round number
+	 * @return round, A slot made in the method
 	 */
 	private Slot constructSlots(ArrayList<Team> teams, int round) {
 		Slot s; //To store the slot that will be made
 
-		//Split current list of teams into the top and bottom halves (teams that could play on the two sides of the match)
 		int mid;
 		// if there is an even number of teams
 		if (teams.size() % 2 == 0) {
@@ -77,11 +77,12 @@ public class SingleBracket extends Bracket{
 			// if there should be more teams on the bottom
 			if ((teams.size() - 1) / 2 % 2 == 0) {
 				mid = teams.size() / 2 + 1;
-			} else {
+			} else { // if there should be more teams on the top
 				mid = teams.size() / 2;
 			}
 		}
 
+		//Split current list of teams into the top and bottom halves (teams that could play on the two sides of the match)
 		ArrayList<Team> teams1 = truncate(teams, 0, mid);
 		ArrayList<Team> teams2 = truncate(teams, mid, teams.size());
 
@@ -110,10 +111,12 @@ public class SingleBracket extends Bracket{
 		return s;
 	} //End of constructSlots
 
-	/**
+	/*
 	 * truncate
 	 * This method takes an ArrayList of teams and returns a new list with about half of the original teams (half or half +/-1)
-	 * @param An ArrayList of teams to be truncated into two, integers representing the left and right indices for the teams being taken
+	 * @param teams, An ArrayList of teams to be truncated into two
+	 * @param left, An integer representing the left index for the section of the teams list being taken
+	 * @param right, An integer representing the right index for the section of the teams list being taken
 	 * @return An ArrayList of teams, truncated from the original list inputted
 	 */
 	private ArrayList<Team> truncate (ArrayList<Team> teams, int left, int right){
@@ -129,11 +132,12 @@ public class SingleBracket extends Bracket{
 		return newList;
 	} //End of truncate
 
-	/**
+	/*
 	 * inBounds
 	 * This method checks if the round and match numbers are within the bounds of the tournament
-	 * @param Two integers representing the round and match number for the match being searched for
-	 * @return A boolean, true if the round and match number have a corresponding match, false if they do not
+	 * @param round, An integer representing the round number of the match being searched for
+	 * @param matchNumber, An integer representing the match number of the match being searched for
+	 * @return boolean, true if the round and match number have a corresponding match, false if they do not
 	 */
 	private boolean inBounds(int round, int matchNumber) {
 		//Return true if there is a match corresponding to the round and match number
@@ -146,7 +150,7 @@ public class SingleBracket extends Bracket{
 	/**
 	 * getNumberOfTeams
 	 * This method returns the number of teams in the tournament
-	 * @return An integer representing the number of teams in the tournament
+	 * @return numTeams, An integer representing the number of teams in the tournament
 	 */
 	@Override
 	public int getNumberOfTeams() {
@@ -156,7 +160,7 @@ public class SingleBracket extends Bracket{
 	/**
 	 * getNumberOfRounds
 	 * This method returns the number of rounds in the tournament
-	 * @return An integer representing the number of rounds in the tournament
+	 * @return numRounds, An integer representing the number of rounds in the tournament
 	 */
 	@Override
 	public int getNumberOfRounds() {
@@ -166,8 +170,8 @@ public class SingleBracket extends Bracket{
 	/**
 	 * getNumberOfMatchesInRound
 	 * This method returns the number of matches in a given round
-	 * @param An integer representing the round
-	 * @return An integer representing the number of matches in the round
+	 * @param round, An integer representing the round
+	 * @return numMatchesInRound, An integer representing the number of matches in the round
 	 */
 	@Override
 	public int getNumberOfMatchesInRound(int round) {
@@ -181,8 +185,9 @@ public class SingleBracket extends Bracket{
 	/**
 	 * getTeamsInMatch
 	 * This method returns the teams that could play in a match
-	 * @param Integers to represent the round and match numbers of the match
-	 * @return A 2D String array that holds the names of the teams that could be playing on each side of the match
+	 * @param round, An integer representing the round number of the match being searched for
+	 * @param matchNumber, An integer representing the match number of the match being searched for
+	 * @return teamNames, A 2D String array that holds the names of the teams that could be playing on each side of the match
 	 */
 	@Override
 	public String[][] getTeamsInMatch(int round, int matchNumber) {
@@ -213,7 +218,9 @@ public class SingleBracket extends Bracket{
 	/**
 	 * setMatchWinner
 	 * This method updates the bracket once the winner of a match has been determined (with the winner inputted)
-	 * @param A String representing the winning team's name, and two integers for the round and match number of the match whose winner has been determined
+	 * @param teamName, A String representing the winning team's name
+	 * @param round, An integer representing the round number of the match whose winner has been determined
+	 * @param matchNumber, An integer representing the match number of the match whose winner has been determined
 	 */
 	@Override
 	public void setMatchWinner(String teamName, int round, int matchNumber) {
@@ -272,4 +279,17 @@ public class SingleBracket extends Bracket{
 			}
 		}
 	} //End of setMatchWinner
+
+	/**
+	 * getMatchBracket
+	 * This method returns whether the match with the inputted round and match number is in the winners or losers bracket
+	 * @param round, An integer that represents the round number of the match being searched for
+	 * @param matchNumber, An integer that represents the match number of the match being searched for
+	 * @return 0, since any match in a single elimination bracket is in the winner's bracket
+	 */
+	@Override
+	public int getMatchBracket(int round, int matchNumber) {
+		return 0;
+	} //End of getMatchBracket
+
 } //End of class

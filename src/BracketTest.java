@@ -6,7 +6,7 @@ class BracketTest {
 
 		ArrayList<Team> teams = new ArrayList<Team>();
 		SingleGenerator generator;
-
+		
 		for (int i = 1; i <= 5; i++) {
 			teams.add(new Team(Integer.toString(i), i));
 		}
