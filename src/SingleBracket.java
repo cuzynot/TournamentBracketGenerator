@@ -176,7 +176,7 @@ public class SingleBracket extends Bracket{
 	@Override
 	public int getNumberOfMatchesInRound(int round) {
 		//Return the round number if it exists within the tournament
-		if (round <= numRounds) {
+		if (round >= 1 && round <= numRounds) {
 			return numMatchesInRound[round];
 		}
 		return -1;
