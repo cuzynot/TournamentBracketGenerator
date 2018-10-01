@@ -279,6 +279,31 @@ public class SingleBracket extends Bracket{
 			}
 		}
 	} //End of setMatchWinner
+	
+	/**
+	 * getMatchWinner
+	 * This method returns the winner of the match with given round and match number
+	 * @param round, An integer representing the round number of the match whose winner has been determined
+	 * @param matchNumber, An integer representing the match number of the match whose winner has been determined
+	 * @return teamName, A String representing the name of the winner team
+	 */
+	public String getMatchWinner(int round, int matchNumber) {
+		if (inBounds(round, matchNumber)) {
+			Slot s = slots[round].get(matchNumber);
+			if (s.teams1.size() + s.teams2.size() == 1) {
+				if (s.teams1.isEmpty()) {
+					return s.teams2.get(0).getName();
+				} else {
+					return s.teams1.get(0).getName();
+				}
+			} else {
+				return "TBD";
+			}
+		} else {
+			// if match does not exist
+			return null;
+		}
+	} //End of setMatchWinner
 
 	/**
 	 * getMatchBracket
