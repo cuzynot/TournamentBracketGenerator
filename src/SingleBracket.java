@@ -24,7 +24,7 @@ public class SingleBracket extends Bracket{
 		numRounds = (int)(Math.ceil(Math.log(teams.size()) / Math.log(2)));//Find the number of rounds necessary for the amount of teams
 		numMatchesInRound = new int[numRounds + 1]; //Set the size of the array storing the number of matches per round
 
-		slots = new ArrayList[numRounds + 1]; //Set the initital size of the slots list
+		slots = new ArrayList[numRounds + 1]; //Set the initial size of the slots list
 
 		//Fill in first spot to be 1-indexed
 		for (int i = 1; i <= numRounds; i++) {
@@ -117,7 +117,7 @@ public class SingleBracket extends Bracket{
 	 * @param teams, An ArrayList of teams to be truncated into two
 	 * @param left, An integer representing the left index for the section of the teams list being taken
 	 * @param right, An integer representing the right index for the section of the teams list being taken
-	 * @return An ArrayList of teams, truncated from the original list inputted
+	 * @return An ArrayList of teams, truncated from the original list inputed
 	 */
 	private ArrayList<Team> truncate (ArrayList<Team> teams, int left, int right){
 		//Holds the truncated list of teams
@@ -307,7 +307,7 @@ public class SingleBracket extends Bracket{
 
 	/**
 	 * getMatchBracket
-	 * This method returns whether the match with the inputted round and match number is in the winners or losers bracket
+	 * This method returns whether the match with the inputed round and match number is in the winners or losers bracket
 	 * @param round, An integer that represents the round number of the match being searched for
 	 * @param matchNumber, An integer that represents the match number of the match being searched for
 	 * @return 0, since any match in a single elimination bracket is in the winner's bracket

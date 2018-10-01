@@ -1,44 +1,46 @@
+import java.util.ArrayList;
+
 class BracketTest {
 
 	public static void main(String[] args) {
 		// ManagementSystem ManagementSys = 
 		new ManagementSystem();
 
-		//		ArrayList<Team> teams = new ArrayList<Team>();
-		//		SingleGenerator generator;
-		//
-		//		for (int i = 1; i <= 50; i++) {
-		//			teams.add(new Team(Integer.toString(i), i));
-		//		}
-		//
-		//		generator = new SingleGenerator(teams, true);
-		//
-		//		Bracket bracket = generator.getBracket();
-		//
-		//		String[][] s;
-		//
-		//		s = bracket.getTeamsInMatch(1, 1);
-		//		for (int i = 0; i < 2; i++) {	
-		//			for (int j = 0; j < s[i].length; j++) {
-		//				System.out.println(s[i][j]);
-		//			}	
-		//		}
-		//		System.out.println();
-		//		s = bracket.getTeamsInMatch(2, 1);
-		//		for (int i = 0; i < 2; i++) {
-		//			for (int j = 0; j < s[i].length; j++) {
-		//				System.out.println(s[i][j]);
-		//			}
-		//		}
-		//		System.out.println();
-		//		s = bracket.getTeamsInMatch(2, 2);
-		//		for (int i = 0; i < 2; i++) {
-		//			for (int j = 0; j < s[i].length; j++) {
-		//				System.out.println(s[i][j]);
-		//			}
-		//		}
-		//
-		//		new Display(generator.getBracket());
+		ArrayList<Team> teams = new ArrayList<Team>();
+		SingleGenerator generator;
+
+		for (int i = 1; i <= 50; i++) {
+			teams.add(new Team(Integer.toString(i), i));
+		}
+
+		generator = new SingleGenerator(teams, true);
+
+		Bracket bracket = generator.getBracket();
+
+		String[][] s;
+
+		s = bracket.getTeamsInMatch(1, 1);
+		for (int i = 0; i < 2; i++) {	
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
+			}	
+		}
+		System.out.println();
+		s = bracket.getTeamsInMatch(2, 1);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
+			}
+		}
+		System.out.println();
+		s = bracket.getTeamsInMatch(2, 2);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				System.out.println(s[i][j]);
+			}
+		}
+
+		new Display(generator.getBracket());
 
 
 		//		long first = System.currentTimeMillis();
