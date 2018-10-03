@@ -13,6 +13,7 @@ public class SingleBracket extends Bracket{
 	int numTeams; //Holds the number of teams in the tournament
 	int[] numMatchesInRound; //Holds the number of matches in each round
 	private ArrayList<Slot> slots[]; //Holds all the slots (each slot stores a match, or possible match)
+	private String tournamentWinner;
 
 	/**
 	 * SingleBracket
@@ -41,6 +42,7 @@ public class SingleBracket extends Bracket{
 		ArrayList<Team> teams1, teams2;
 		Slot leftSlot, rightSlot, parentSlot;
 		int round, matchNumber;
+		String winner;
 
 		/*
 		 * Slots
@@ -225,61 +227,61 @@ public class SingleBracket extends Bracket{
 	@Override
 	public void setMatchWinner(String teamName, int round, int matchNumber) {
 		if (inBounds(round, matchNumber)) {
+
+			//Get slot corresponding to match whose winner is being set
 			Slot s = slots[round].get(matchNumber);
 
-			//ArrayList of teams to store the teams that have to be removed from each slot in the bracket (ones that were eliminated)
-			ArrayList<Team> teamsRemove = new ArrayList<Team>();
+			// Match is currently taking place
+			if (s.teams1.size() == 1 && s.teams2.size() == 1) {
 
-			boolean foundInTeams1 = false;
-			boolean foundInTeams2 = false;
+				//Team to store the team will be set to have lost
+				Team teamToRemove = null;
 
-			//Loop through teams1 to search for the team
-			for (int i = 0; i < s.teams1.size(); i++) {
-				if ((s.teams1.get(i).getName().equals(teamName))) {
-					foundInTeams1 = true;
-					break;
-				}
-			}
+				String team1Name = s.teams1.get(0).getName();
+				String team2Name = s.teams2.get(0).getName();
 
-			//If not found in teams1
-			if (!foundInTeams1) {
-				//Loop through teams2
-				for (int i = 0; i < s.teams2.size(); i++) {
-					if ((s.teams2.get(i).getName().equals(teamName))) {
-						foundInTeams2 = true;
-						break;
+				//check if teams1 has the team that won
+				if (team1Name.equals(teamName)) {
+					// if the current round is the final round
+					if (round == numRounds) {
+						// set tournament winner
+						tournamentWinner = team1Name;
 					}
-				}
-			}
+					// set match winner
+					s.winner = team1Name;
 
-			if (foundInTeams1 || foundInTeams2) {
-				//Remove other teams that lost and add to the teams-to-remove list
-				for (int i = 0; i < s.teams1.size(); i++) {
-					if (!(s.teams1.get(i).getName().equals(teamName))) {
-						teamsRemove.add(s.teams1.remove(i));
-						i--;
+					//Set losing team (to later remove from upper matches)
+					teamToRemove = s.teams2.get(0);
+
+					//or if teams2 has the team that won
+				} else if (team2Name.equals(teamName)) {
+					// if the current round is the final round
+					if (round == numRounds) {
+						// set tournament winner
+						tournamentWinner = team1Name;
 					}
+					// set match winner
+					s.winner = team2Name;
+
+					//Set losing team (to later remove from upper matches)
+					teamToRemove = s.teams1.get(0);
 				}
 
-				for (int i = 0; i < s.teams2.size(); i++) {
-					if (!(s.teams2.get(i).getName().equals(teamName))) {
-						teamsRemove.add(s.teams2.remove(i));
-						i--;
-					}
-				}
-
-				//Remove such teams from the slot's parents
-				while (s.round < numRounds) {
-					s = s.parentSlot;
-					for (int j = 0; j < teamsRemove.size(); j++) {
-						s.teams1.remove(teamsRemove.get(j));
-						s.teams2.remove(teamsRemove.get(j));
+				// start from one round in advance
+				s.round++;
+				if (teamToRemove != null) {
+					//Remove losing from the slot's parents
+					while (s.round < numRounds) {
+						s = s.parentSlot;
+						s.teams1.remove(teamToRemove);
+						s.teams2.remove(teamToRemove);
 					}
 				}
 			}
 		}
+
 	} //End of setMatchWinner
-	
+
 	/**
 	 * getMatchWinner
 	 * This method returns the winner of the match with given round and match number
@@ -290,20 +292,20 @@ public class SingleBracket extends Bracket{
 	public String getMatchWinner(int round, int matchNumber) {
 		if (inBounds(round, matchNumber)) {
 			Slot s = slots[round].get(matchNumber);
-			if (s.teams1.size() + s.teams2.size() == 1) {
-				if (s.teams1.isEmpty()) {
-					return s.teams2.get(0).getName();
-				} else {
-					return s.teams1.get(0).getName();
-				}
-			} else {
-				return "TBD";
-			}
-		} else {
-			// if match does not exist
-			return null;
+			return s.winner;
 		}
-	} //End of setMatchWinner
+		// if match does not exist
+		return null;
+	} //End of getMatchWinner
+
+	/**
+	 * getTournamentWinner
+	 * This method returns the winner of the tournament
+	 * @return tournamentWinner, A String representing the name of the tournament winner
+	 */
+	public String getTournamentWinner() {
+		return tournamentWinner;
+	} //End of setMaWinner
 
 	/**
 	 * getMatchBracket

@@ -46,6 +46,13 @@ public abstract class Bracket {
 	 * @param matchNumber, An integer representing the match number of the match whose winner has been determined
 	 */
 	public abstract void setMatchWinner(String teamName, int round, int matchNumber);
+	
+	/**
+	 * getTournamentWinner
+	 * This method returns the winner of the tournament
+	 * @return tournamentWinner, A String representing the name of the tournament winner
+	 */
+	public abstract String getTournamentWinner();
 
 	/**
 	 * getMatchBracket

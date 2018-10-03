@@ -4,12 +4,12 @@ class BracketTest {
 
 	public static void main(String[] args) {
 		// ManagementSystem ManagementSys = 
-		new ManagementSystem();
+		// new ManagementSystem();
 
 		ArrayList<Team> teams = new ArrayList<Team>();
 		SingleGenerator generator;
 
-		for (int i = 1; i <= 50; i++) {
+		for (int i = 1; i <= 8; i++) {
 			teams.add(new Team(Integer.toString(i), i));
 		}
 
@@ -39,8 +39,13 @@ class BracketTest {
 				System.out.println(s[i][j]);
 			}
 		}
+		
+		bracket.setMatchWinner("1", 1, 1);
+		bracket.setMatchWinner("2", 3, 1);
+		
+		System.out.println();
 
-		new Display(generator.getBracket());
+		// new Display(generator.getBracket());
 
 
 		//		long first = System.currentTimeMillis();
