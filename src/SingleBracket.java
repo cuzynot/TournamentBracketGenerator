@@ -9,9 +9,9 @@
 import java.util.ArrayList;
 
 public class SingleBracket extends Bracket{
-	int numRounds; //Holds the number of rounds in the tournament
-	int numTeams; //Holds the number of teams in the tournament
-	int[] numMatchesInRound; //Holds the number of matches in each round
+	private int numRounds; //Holds the number of rounds in the tournament
+	private int numTeams; //Holds the number of teams in the tournament
+	private int[] numMatchesInRound; //Holds the number of matches in each round
 	private ArrayList<Slot> slots[]; //Holds all the slots (each slot stores a match, or possible match)
 	private String tournamentWinner;
 
