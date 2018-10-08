@@ -2,7 +2,7 @@
  * [SingleBracket.java]
  * Single elimination bracket object (that can update as a tournament progresses)
  * Authors: Yili Liu and Brian Li
- * September 21, 2018
+ * October 09, 2018
  */
 
 //Import statements
@@ -303,6 +303,7 @@ public class SingleBracket extends Bracket{
 	 * This method returns the winner of the tournament
 	 * @return tournamentWinner, A String representing the name of the tournament winner
 	 */
+	@Override
 	public String getTournamentWinner() {
 		return tournamentWinner;
 	} //End of setMaWinner
