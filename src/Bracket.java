@@ -2,7 +2,7 @@
  * [Bracket.java]
  * Bracket object that outlines the methods necessary for a single or double elimination bracket object
  * Authors: Yili Liu and Brian Li
- * September 21, 2018
+ * October 09, 2018
  */
 
 public abstract class Bracket {
@@ -59,7 +59,8 @@ public abstract class Bracket {
 	 * This method returns whether the match with the inputted round and match number is in the winners or losers bracket
 	 * @param round, An integer that represents the round number of the match being searched for
 	 * @param matchNumber, An integer that represents the match number of the match being searched for
-	 * @return 0, since any match in a single elimination bracket is in the winner's bracket
+	 * @return 0, if the match is in the winner's bracket
+	 * @return 1, if the match is in the loser's bracket
 	 */
 	public abstract int getMatchBracket(int round, int matchNumber);
 
