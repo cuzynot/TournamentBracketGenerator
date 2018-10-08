@@ -14,8 +14,6 @@ public abstract class Generator {
 	 * This method returns the Bracket generated
 	 * @return bracket, The generated Bracket object
 	 */
-	public Bracket getBracket() {
-		return bracket;
-	} //End of getBracket
+	public abstract Bracket getBracket();
 
 } //End of class
