@@ -11,8 +11,14 @@ import java.util.Collections;
 
 public class SingleGenerator extends Generator{
 
-	SingleBracket sb;
+	//SingleBracket sb;
 
+	/**
+	 * SingleGenerator
+	 * Constructor that creates a single bracket given an arrayList of teams
+	 * @param teams, An ArrayList of teams
+	 * @param seed, A boolean indicating whether teams are seeded or not
+	 */
 	SingleGenerator(ArrayList<Team> teams, boolean seed){
 		if (seed) {
 			//Sort the teams in ascending order by seed
@@ -20,17 +26,16 @@ public class SingleGenerator extends Generator{
 			teams = organizeSeeds(teams);
 		}
 
-		sb = new SingleBracket(teams);
-	}
+		bracket = new SingleBracket(teams);
+	} //End of constructor
 
-	/**
+	/*
 	 * organizeSeeds
 	 * This method takes in an arraylist of teams and returns the same list
 	 * in order for the bracket to fill in the teams if the bracket is seeded
-	 * @param An ArrayList of teams
-	 * @return An ArrayList of teams in appropriate seeding order
+	 * @param teams, An ArrayList of teams
+	 * @return teams, An ArrayList of teams in appropriate seeding order
 	 */
-
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
 		if (teams.size() > 1) {
 			//Make two new ArrayLists to hold the split list of teams
@@ -74,8 +79,8 @@ public class SingleGenerator extends Generator{
 	 * This method returns the bracket made inside the generator
 	 * @return A bracket object, representing the bracket made
 	 */
-
+	@override
 	public Bracket getBracket() {
-		return sb;
+		return bracket;
 	}
 } //End of class
