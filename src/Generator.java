@@ -7,8 +7,6 @@
 
 public abstract class Generator {
 
-	private Bracket bracket; //Holds (access to) the bracket object made
-
 	/**
 	 * getBracket
 	 * This method returns the Bracket generated
