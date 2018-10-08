@@ -2,7 +2,7 @@
  * [SingleGenerator.java]
  * Generator for a single elimination bracket, that organizes teams by seeds (if needed) and makes an appropriate bracket
  * Authors: Yili Liu and Brian Li
- * September 21, 2018
+ * October 09, 2018
  */
 
 //Import statements
@@ -11,8 +11,14 @@ import java.util.Collections;
 
 public class SingleGenerator extends Generator{
 
-	SingleBracket sb;
+	private SingleBracket sb; //Holds (access to) the bracket object made
 
+	/**
+	 * SingleGenerator
+	 * Constructor that creates a single bracket given an arrayList of teams
+	 * @param teams, An ArrayList of teams
+	 * @param seed, A boolean indicating whether teams are seeded or not
+	 */
 	SingleGenerator(ArrayList<Team> teams, boolean seed){
 		if (seed) {
 			//Sort the teams in ascending order by seed
@@ -21,16 +27,15 @@ public class SingleGenerator extends Generator{
 		}
 
 		sb = new SingleBracket(teams);
-	}
+	} //End of constructor
 
-	/**
+	/*
 	 * organizeSeeds
 	 * This method takes in an arraylist of teams and returns the same list
 	 * in order for the bracket to fill in the teams if the bracket is seeded
-	 * @param An ArrayList of teams
-	 * @return An ArrayList of teams in appropriate seeding order
+	 * @param teams, An ArrayList of teams
+	 * @return teams, An ArrayList of teams in appropriate seeding order
 	 */
-
 	private ArrayList<Team> organizeSeeds (ArrayList<Team> teams) {
 		if (teams.size() > 1) {
 			//Make two new ArrayLists to hold the split list of teams
@@ -72,9 +77,9 @@ public class SingleGenerator extends Generator{
 	/**
 	 * getBracket
 	 * This method returns the bracket made inside the generator
-	 * @return A bracket object, representing the bracket made
+	 * @return sb, A bracket object, representing the bracket made
 	 */
-
+	@Override
 	public Bracket getBracket() {
 		return sb;
 	}

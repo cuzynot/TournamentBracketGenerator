@@ -2,7 +2,7 @@
  * [Team.java]
  * Class that represents a team competing in a tournament
  * Authors: Yili Liu and Brian Li
- * September 25, 2018
+ * October 09, 2018
  */
 
 public class Team implements Comparable<Team>{
@@ -52,12 +52,12 @@ public class Team implements Comparable<Team>{
 	 * compareTo
 	 * This method compares one team's seeding to another, outputting a negative integer if the team running the method 
 	 * has a higher seed, and a positive integer if the team running the method has a lower seed
-	 * @param o, A Team that is being compared to the team running the method
+	 * @param other, A Team that is being compared to the team running the method
 	 * @return An integer, indicating which team has the higher seed
 	 */
 	@Override
-	public int compareTo(Team o) {
-		return this.seed - o.seed;
+	public int compareTo(Team other) {
+		return this.seed - other.seed;
 	} //End of compareTo
 
 } //End of class

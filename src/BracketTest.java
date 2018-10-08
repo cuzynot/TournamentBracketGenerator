@@ -1,75 +1,47 @@
-import java.util.ArrayList;
-
 class BracketTest {
 
 	public static void main(String[] args) {
-		// ManagementSystem ManagementSys = 
-		// new ManagementSystem();
+		new ManagementSystem();
 
-		ArrayList<Team> teams = new ArrayList<Team>();
-		SingleGenerator generator;
-
-		for (int i = 1; i <= 8; i++) {
-			teams.add(new Team(Integer.toString(i), i));
-		}
-
-		generator = new SingleGenerator(teams, true);
-
-		Bracket bracket = generator.getBracket();
-
-		String[][] s;
-
-		s = bracket.getTeamsInMatch(1, 1);
-		for (int i = 0; i < 2; i++) {	
-			for (int j = 0; j < s[i].length; j++) {
-				System.out.println(s[i][j]);
-			}	
-		}
-		System.out.println();
-		s = bracket.getTeamsInMatch(2, 1);
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				System.out.println(s[i][j]);
-			}
-		}
-		System.out.println();
-		s = bracket.getTeamsInMatch(2, 2);
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				System.out.println(s[i][j]);
-			}
-		}
-		
-		bracket.setMatchWinner("1", 1, 1);
-		bracket.setMatchWinner("2", 3, 1);
-		
-		System.out.println();
-
-		// new Display(generator.getBracket());
-
-
-		//		long first = System.currentTimeMillis();
-		//
 		//		ArrayList<Team> teams = new ArrayList<Team>();
-		//		SingleGenerator generator;
-		//
-		//		for (int i = 1; i < 1000; i++) {
+		//		
+		//		for (int i = 1; i <= 4; i++) {
 		//			teams.add(new Team(Integer.toString(i), i));
 		//		}
-		//
-		//		generator = new SingleGenerator(teams, true);
-		//
-		//		SingleBracket bracket = (SingleBracket)generator.getBracket();
 		//		
-		//		for (int i = 1; i <= bracket.getNumberOfRounds(); i++) {
-		//			for (int j = 1; j <= bracket.getNumberOfMatchesInRound(i); j++) {
-		//				String[][] s = bracket.getTeamsInMatch(i, j);
-		//			}
-		//		}
+		//		Generator g = new SingleGenerator(teams, false);
+		//		Bracket b = g.getBracket();
 		//		
-		//		long last = System.currentTimeMillis();
+		//		printAll(b);
 		//		
-		//		System.out.println(last - first);
+		//		b.setMatchWinner("1", 1, 1);
+		//		
+		//		printAll(b);
+	}
+
+	static void printAll(Bracket b) {
+		System.out.println("---------------------------");
+
+		for (int i = 1; i <= b.getNumberOfRounds(); i++) {
+			for (int j = 1; j <= b.getNumberOfMatchesInRound(i); j++) {
+				System.out.println("Round " + i + " match " + j);
+
+				String[][] names = b.getTeamsInMatch(i, j);
+
+				System.out.println("possible teams 1");
+				for (int k = 0; k < names[0].length; k++) {
+					System.out.print(names[0][k] + " ");
+				}
+				System.out.println();
+
+				System.out.println("possible teams 2");
+				for (int k = 0; k < names[1].length; k++) {
+					System.out.print(names[1][k] + " ");
+				}
+				System.out.println();
+				System.out.println();
+			}
+		}
 	}
 
 }

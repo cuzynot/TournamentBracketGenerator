@@ -2,16 +2,16 @@
  * [SingleBracket.java]
  * Single elimination bracket object (that can update as a tournament progresses)
  * Authors: Yili Liu and Brian Li
- * September 21, 2018
+ * October 09, 2018
  */
 
 //Import statements
 import java.util.ArrayList;
 
 public class SingleBracket extends Bracket{
-	int numRounds; //Holds the number of rounds in the tournament
-	int numTeams; //Holds the number of teams in the tournament
-	int[] numMatchesInRound; //Holds the number of matches in each round
+	private int numRounds; //Holds the number of rounds in the tournament
+	private int numTeams; //Holds the number of teams in the tournament
+	private int[] numMatchesInRound; //Holds the number of matches in each round
 	private ArrayList<Slot> slots[]; //Holds all the slots (each slot stores a match, or possible match)
 	private String tournamentWinner;
 
@@ -231,11 +231,12 @@ public class SingleBracket extends Bracket{
 			//Get slot corresponding to match whose winner is being set
 			Slot s = slots[round].get(matchNumber);
 
-			// Match is currently taking place
+			// Match is currently taking place and a winner has not been set yet
 			if (s.teams1.size() == 1 && s.teams2.size() == 1) {
 
-				//Team to store the team will be set to have lost
+				//Team to store the team will be set to have lost and won
 				Team teamToRemove = null;
+				Team teamToAdd = null;
 
 				String team1Name = s.teams1.get(0).getName();
 				String team2Name = s.teams2.get(0).getName();
@@ -250,6 +251,8 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team1Name;
 
+					//Set winning team (to later add from upper matches)
+					teamToAdd = s.teams1.get(0);
 					//Set losing team (to later remove from upper matches)
 					teamToRemove = s.teams2.get(0);
 
@@ -263,18 +266,38 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team2Name;
 
+					//Set winning team (to later add from upper matches)
+					teamToAdd = s.teams2.get(0);
 					//Set losing team (to later remove from upper matches)
 					teamToRemove = s.teams1.get(0);
 				}
 
-				// start from one round in advance
-				s.round++;
+				// exception checking
 				if (teamToRemove != null) {
-					//Remove losing from the slot's parents
+					//Remove losing team from the slot's parents
 					while (s.round < numRounds) {
+						// look at previous match number
+						int prevMatchNumber = s.matchNumber;
 						s = s.parentSlot;
-						s.teams1.remove(teamToRemove);
-						s.teams2.remove(teamToRemove);
+						
+						// if the right slot matches the previous slot
+						if (s.rightSlot.matchNumber == prevMatchNumber) {
+							// if team is not included -> add team
+							if (!s.teams2.contains(teamToAdd)) {
+								s.teams2.add(teamToAdd);
+							}
+							// remove team from possible teams list
+							s.teams2.remove(teamToRemove);
+							
+							// then the left slot has to match the previous slot
+						} else {
+							// if team is not included -> add team
+							if (!s.teams1.contains(teamToAdd)) {
+								s.teams1.add(teamToAdd);
+							}
+							// remove team from possible teams list
+							s.teams1.remove(teamToRemove);
+						}
 					}
 				}
 			}
@@ -303,6 +326,7 @@ public class SingleBracket extends Bracket{
 	 * This method returns the winner of the tournament
 	 * @return tournamentWinner, A String representing the name of the tournament winner
 	 */
+	@Override
 	public String getTournamentWinner() {
 		return tournamentWinner;
 	} //End of setMaWinner
