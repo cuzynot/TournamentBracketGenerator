@@ -7,7 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="/Users/ma521/Documents/Java/TournamentBracketGenerator/lib/db"/>
-	<classpathentry kind="lib" path="/Users/ma521/Documents/Java/TournamentBracketGenerator/lib/display"/>
 	<classpathentry kind="lib" path="/Users/ma521/Documents/Java/TournamentBracketGenerator/lib/ms"/>
+	<classpathentry kind="lib" path="/Users/ma521/Documents/Java/TournamentBracketGenerator/lib/display"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

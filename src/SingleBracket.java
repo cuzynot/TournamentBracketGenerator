@@ -234,8 +234,9 @@ public class SingleBracket extends Bracket{
 			// Match is currently taking place
 			if (s.teams1.size() == 1 && s.teams2.size() == 1) {
 
-				//Team to store the team will be set to have lost
+				//Team to store the team will be set to have lost and won
 				Team teamToRemove = null;
+				Team teamToAdd = null;
 
 				String team1Name = s.teams1.get(0).getName();
 				String team2Name = s.teams2.get(0).getName();
@@ -250,7 +251,9 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team1Name;
 
-					//Set losing team (to later remove from upper matches)
+					//Set winning team (to later add from upper matches)
+					teamToAdd = s.teams1.get(0);
+					//Set losing team (to later remove from lower matches)
 					teamToRemove = s.teams2.get(0);
 
 					//or if teams2 has the team that won
@@ -263,18 +266,36 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team2Name;
 
+					//Set winning team (to later add from lower matches)
+					teamToAdd = s.teams2.get(0);
 					//Set losing team (to later remove from upper matches)
 					teamToRemove = s.teams1.get(0);
 				}
 
 				// start from one round in advance
-				s.round++;
 				if (teamToRemove != null) {
 					//Remove losing from the slot's parents
 					while (s.round < numRounds) {
+						int prevMatchNumber = s.matchNumber;
 						s = s.parentSlot;
-						s.teams1.remove(teamToRemove);
-						s.teams2.remove(teamToRemove);
+						
+						if (s.rightSlot.matchNumber == prevMatchNumber) {
+							// remove team
+							s.teams2.remove(teamToRemove);
+							// if winning team is not present
+							if (!s.teams2.contains(teamToAdd)) {
+								// add team
+								s.teams2.add(teamToAdd);
+							}
+						} else {
+							// remove team
+							s.teams1.remove(teamToRemove);
+							// if winning team is not present
+							if (!s.teams1.contains(teamToAdd)) {
+								// add team
+								s.teams1.add(teamToAdd);
+							}
+						}
 					}
 				}
 			}
