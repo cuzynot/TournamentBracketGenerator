@@ -57,8 +57,8 @@ public class SingleBracket extends Bracket{
 			this.teams2 = team2;
 			this.round = round;
 			this.matchNumber = matchNumber;
-		}
-	} //End of constructor
+		} //End of constructor
+	} //End of class
 
 	/*
 	 * constructSlots
@@ -231,12 +231,11 @@ public class SingleBracket extends Bracket{
 			//Get slot corresponding to match whose winner is being set
 			Slot s = slots[round].get(matchNumber);
 
-			// Match is currently taking place and a winner has not been set yet
+			// Match is currently taking place
 			if (s.teams1.size() == 1 && s.teams2.size() == 1) {
 
-				//Team to store the team will be set to have lost and won
+				//Team to store the team will be set to have lost
 				Team teamToRemove = null;
-				Team teamToAdd = null;
 
 				String team1Name = s.teams1.get(0).getName();
 				String team2Name = s.teams2.get(0).getName();
@@ -251,8 +250,6 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team1Name;
 
-					//Set winning team (to later add from upper matches)
-					teamToAdd = s.teams1.get(0);
 					//Set losing team (to later remove from upper matches)
 					teamToRemove = s.teams2.get(0);
 
@@ -266,38 +263,18 @@ public class SingleBracket extends Bracket{
 					// set match winner
 					s.winner = team2Name;
 
-					//Set winning team (to later add from upper matches)
-					teamToAdd = s.teams2.get(0);
 					//Set losing team (to later remove from upper matches)
 					teamToRemove = s.teams1.get(0);
 				}
 
-				// exception checking
+				// start from one round in advance
+				s.round++;
 				if (teamToRemove != null) {
-					//Remove losing team from the slot's parents
+					//Remove losing from the slot's parents
 					while (s.round < numRounds) {
-						// look at previous match number
-						int prevMatchNumber = s.matchNumber;
 						s = s.parentSlot;
-						
-						// if the right slot matches the previous slot
-						if (s.rightSlot.matchNumber == prevMatchNumber) {
-							// if team is not included -> add team
-							if (!s.teams2.contains(teamToAdd)) {
-								s.teams2.add(teamToAdd);
-							}
-							// remove team from possible teams list
-							s.teams2.remove(teamToRemove);
-							
-							// then the left slot has to match the previous slot
-						} else {
-							// if team is not included -> add team
-							if (!s.teams1.contains(teamToAdd)) {
-								s.teams1.add(teamToAdd);
-							}
-							// remove team from possible teams list
-							s.teams1.remove(teamToRemove);
-						}
+						s.teams1.remove(teamToRemove);
+						s.teams2.remove(teamToRemove);
 					}
 				}
 			}
@@ -329,7 +306,7 @@ public class SingleBracket extends Bracket{
 	@Override
 	public String getTournamentWinner() {
 		return tournamentWinner;
-	} //End of setMaWinner
+	} //End of getTournamentWinner
 
 	/**
 	 * getMatchBracket
