@@ -79,7 +79,6 @@ public class SingleGenerator extends Generator{
 	 * This method returns the bracket made inside the generator
 	 * @return sb, A bracket object, representing the bracket made
 	 */
-	@Override
 	public Bracket getBracket() {
 		return sb;
 	}

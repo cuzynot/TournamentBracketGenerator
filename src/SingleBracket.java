@@ -261,7 +261,7 @@ public class SingleBracket extends Bracket{
 					// if the current round is the final round
 					if (round == numRounds) {
 						// set tournament winner
-						tournamentWinner = team1Name;
+						tournamentWinner = team2Name;
 					}
 					// set match winner
 					s.winner = team2Name;
@@ -279,6 +279,7 @@ public class SingleBracket extends Bracket{
 						int prevMatchNumber = s.matchNumber;
 						s = s.parentSlot;
 						
+						// if the previous slot is current's right
 						if (s.rightSlot.matchNumber == prevMatchNumber) {
 							// remove team
 							s.teams2.remove(teamToRemove);
@@ -287,6 +288,8 @@ public class SingleBracket extends Bracket{
 								// add team
 								s.teams2.add(teamToAdd);
 							}
+							
+							// if the previous slot is current's left
 						} else {
 							// remove team
 							s.teams1.remove(teamToRemove);
