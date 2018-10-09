@@ -57,8 +57,8 @@ public class SingleBracket extends Bracket{
 			this.teams2 = team2;
 			this.round = round;
 			this.matchNumber = matchNumber;
-		}
-	} //End of constructor
+		} //End of constructor
+	} //End of class
 
 	/*
 	 * constructSlots
@@ -306,7 +306,7 @@ public class SingleBracket extends Bracket{
 	@Override
 	public String getTournamentWinner() {
 		return tournamentWinner;
-	} //End of setMaWinner
+	} //End of getTournamentWinner
 
 	/**
 	 * getMatchBracket
