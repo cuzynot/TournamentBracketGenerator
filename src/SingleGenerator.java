@@ -69,7 +69,7 @@ public class SingleGenerator extends Generator{
 				teams.add(teams2.get(i));
 			}
 		}
-
+		
 		return teams;
 	} //End of organizeSeeds
 
@@ -79,7 +79,7 @@ public class SingleGenerator extends Generator{
 	 * This method returns the bracket made inside the generator
 	 * @return sb, A bracket object, representing the bracket made
 	 */
-	public Bracket getBracket() {
+	public SingleBracket getBracket() {
 		return sb;
 	}
 } //End of class
